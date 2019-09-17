@@ -31,8 +31,11 @@ public class Polinomio {
         rand.ints();
         int grade = rand.nextInt(6);
         ArrayList<Racional> coef = new ArrayList<>();
-        for(int i=0; i<=grade; i++)
-            coef.add(new Racional(rand.nextInt(9)));
+        int den;
+        for(int i=0; i<=grade; i++){
+            den=rand.nextInt(9);
+            coef.add(new Racional(den*rand.nextInt(9), den));
+        }
         return new Polinomio(grade, coef);
     }
 
@@ -75,7 +78,7 @@ public class Polinomio {
             for(int i = 0; i<=grado; i++)
                 coeficientes.set(i, coeficientes.get(i).restar(p2.coeficientes.get(i)));
             for(int i = 0; i<diferencia; i++){
-                Racional r=new Racional(0);
+                Racional r=new Racional(0,1);
                 coeficientes.add(r.restar(p2.coeficientes.get(i)));
             }
             grado = p2.grado;
@@ -86,12 +89,12 @@ public class Polinomio {
         int gradoMax = grado + p2.grado;
         ArrayList<Racional> coef = new ArrayList<>();
         for(int  i=0; i<=gradoMax; i++){
-            Racional r = new Racional(0);
+            Racional r = new Racional(0,1);
             coef.add(r);
         }
         for(int i = 0; i<=grado; i++)
             for(int j = 0; j<=p2.grado; j++)
-                coef.set(i+j, coef.get(i+j).sumar(coeficientes.get(i).multiplicarSinAfectar(p2.coeficientes.get(j))));
+                coef.set(i+j, coef.get(i+j).sumar(coeficientes.get(i).multiplicar(p2.coeficientes.get(j))));
         coeficientes = coef;
         grado = gradoMax;
     }
@@ -112,7 +115,7 @@ public class Polinomio {
     @Override
     public String toString(){
         String ret="";
-        Racional r0 = new Racional(0);
+        Racional r0 = new Racional(0,1);
         for(int i=grado; i>=0; i--){
             if(!coeficientes.get(i).comparar(r0)){
                 if(i!=0){
@@ -124,5 +127,27 @@ public class Polinomio {
             }
         }
         return ret;
+    }
+    
+    public ArrayList<Double> obtnerRaices(){
+        ArrayList<Double> raices = new ArrayList<>();
+        switch(grado){
+            case 1:
+                raices.add(coeficientes.get(0).dividir(coeficientes.get(1)).aDecimales());
+                break;
+            case 2:
+                Racional discriminante = coeficientes.get(1).cuadrado().restar(coeficientes.get(0).multiplicar(coeficientes.get(2)).multiplicar(4));
+                if(discriminante.esPositivo()){
+                    raices.add((-coeficientes.get(1).aDecimales()+Math.sqrt(discriminante.aDecimales()))/coeficientes.get(2).aDecimales()*2.0);
+                    raices.add((-coeficientes.get(1).aDecimales()-Math.sqrt(discriminante.aDecimales()))/coeficientes.get(2).aDecimales()*2.0);
+                }
+                break;
+            default:
+                
+                
+                
+        }       
+        
+        return raices;
     }
 }

@@ -10,47 +10,69 @@ package algebra;
  * @author alexi
  */
 public class Racional {
-    int a;
+    private int den, num;
     
-     public Racional(int a){
-         this.a = a;
+     public Racional(int n,int d){
+         den = d;
+         num = n;
      }
     
     public Racional sumar(Racional r){
-        a+=r.a;
-        return new Racional(a);
+        int mD= gcd(r.den, den);
+        
+        return new Racional((den/mD)*num + (r.den/mD)*r.num, r.den*den*mD);
     }
     
     public Racional restar(Racional r){
-        a-=r.a;
-        return this;
+        int mD= gcd(r.den, den);
+        
+        return new Racional((den/mD)*num - (r.den/mD)*r.num, r.den*den*mD);
     }
     
     public Racional multiplicar(Racional r){
-        a=a*r.a;
-        return this;
+        return new Racional(num*r.num, mcd(den, r.den));
+    }
+    
+    public Racional multiplicar(int n){
+        return multiplicar(new Racional(n, 1));
+    }
+    
+    public Racional cuadrado(){
+        return multiplicar(this);
     }
     
     public Racional dividir(Racional r){
-        a/=r.a;
-        return this;
+        return new Racional(den*r.num, num * r.den);
     }
     
     public boolean comparar(Racional r){
-        return a==r.a;
+        return den*r.num==r.den*num;
     }
     
-    public Racional sumarSinAfectar(Racional r2){
-        return new Racional(a + r2.a);
+    
+    private int gcd(int a, int b){
+        int gc=1;
+        for(int i = 1; i <= a && i <= b; i++)
+            if(a%i==0 && b%i==0)
+                gc = i;
+        return gc;
     }
     
-    public Racional multiplicarSinAfectar(Racional r2){
-        return new Racional(a * r2.a);
-    }
     
+    private int mcd(int a, int b){
+        return (a*b)/gcd(a, b);
+    }
     @Override
     public String toString(){
-        return a+"";
+        return num + "/" + den;
+    }
+    
+    boolean esPositivo(){
+        return (den>=0 && num>=0) || (den<0 && num<0);
+    }
+    
+    double aDecimales(){
+        return new Double(den/num);
     }
     
     
