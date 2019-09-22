@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="Bp" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto.Test2Controller">
+   <center>
+      <VBox alignment="TOP_CENTER" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="399.0" prefWidth="448.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Region prefHeight="15.0" prefWidth="428.0">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Region>
+            <Button id="suma" fx:id="suma" mnemonicParsing="false" onAction="#sumaClicked" prefHeight="50.0" prefWidth="206.0" text="Suma o Adición" />
+            <Button id="resta" fx:id="resta" mnemonicParsing="false" onAction="#restaClicked" prefHeight="50.0" prefWidth="206.0" text="Resta o Sustracción" />
+            <Button fx:id="mult" mnemonicParsing="false" onAction="#multClicked" prefHeight="50.0" prefWidth="206.0" text="Multiplicación o Producto" />
+            <Button fx:id="div" mnemonicParsing="false" onAction="#divClicked" prefHeight="50.0" prefWidth="206.0" text="División o cociente" />
+            <Button fx:id="teof" mnemonicParsing="false" onAction="#teofClicked" prefHeight="50.0" prefWidth="206.0" text="Teorema Funamental del Álgebra" />
+            <Button fx:id="btnDerivada" layoutX="131.0" layoutY="285.0" mnemonicParsing="false" onAction="#btnDerivadaClicked" prefHeight="50.0" prefWidth="206.0" text="Derivada del Polinomio" />
+            <Region layoutX="20.0" layoutY="20.0" prefHeight="0.0" prefWidth="428.0" />
+            <Button fx:id="newPoli" layoutX="150.0" layoutY="355.0" mnemonicParsing="false" onAction="#newPoliClicked" prefHeight="25.0" prefWidth="168.0" text="Generar polinomio nuevo" />
+            <Button fx:id="salir" mnemonicParsing="false" onAction="#salirClicked" prefHeight="25.0" prefWidth="168.0" text="Salir" />
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+   </center>
+   <top>
+      <Label alignment="CENTER" prefHeight="35.0" prefWidth="584.0" text="Bienvenido al programa de Álgebra de Polinomios" textAlignment="CENTER" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+   </top>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+   <padding>
+      <Insets bottom="15.0" left="15.0" right="15.0" top="20.0" />
+   </padding>
+</BorderPane>

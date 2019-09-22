@@ -45,6 +45,10 @@ public class Racional {
         return new Racional(den*r.num, num * r.den);
     }
     
+    public Racional dividir(int n){
+        return new Racional(num, den*n);
+    }
+    
     public boolean comparar(Racional r){
         return den*r.num==r.den*num;
     }
@@ -72,8 +76,7 @@ public class Racional {
     }
     
     double aDecimales(){
-        return new Double(den/num);
+        return new Double(num/den);
     }
-    
-    
+        
 }
