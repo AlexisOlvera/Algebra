@@ -30,11 +30,11 @@ public class Polinomio {
     public static Polinomio createPolinomioRandom(){
         Random rand = new Random();
         rand.ints();
-        int grade = rand.nextInt(6);
+        int grade = rand.nextInt(4)+2;
         ArrayList<Racional> coef = new ArrayList<>();
         int den;
         for(int i=0; i<=grade; i++){
-            den=rand.nextInt(8);
+            den=rand.nextInt(9);
             coef.add(new Racional(den, 1));
         }
         return new Polinomio(grade, coef);
@@ -369,10 +369,11 @@ public class Polinomio {
     public Polinomio integral(){
         ArrayList<Racional> aux = new ArrayList<>();
         aux.add(new Racional(0, 1));
-        for(int i=1; i<=grado; i++){
-            aux.add(coeficientes.get(i).dividir(i));
+        for(int i=0; i<=grado; i++){
+            aux.add(coeficientes.get(i).dividir(i+1));
+            System.out.println(aux.get(i));
         }
-        return new Polinomio(grado, aux);
+        return new Polinomio(grado+1, aux);
     }
     
 

@@ -25,6 +25,7 @@
             <Button fx:id="div" mnemonicParsing="false" onAction="#divClicked" prefHeight="50.0" prefWidth="206.0" text="División o cociente" />
             <Button fx:id="teof" mnemonicParsing="false" onAction="#teofClicked" prefHeight="50.0" prefWidth="206.0" text="Teorema Funamental del Álgebra" />
             <Button fx:id="btnDerivada" layoutX="131.0" layoutY="285.0" mnemonicParsing="false" onAction="#btnDerivadaClicked" prefHeight="50.0" prefWidth="206.0" text="Derivada del Polinomio" />
+            <Button id="integral" fx:id="btnIntegral" mnemonicParsing="false" onAction="#btnIntegralClicked" prefHeight="50.0" prefWidth="206.0" text="Integral" />
             <Region layoutX="20.0" layoutY="20.0" prefHeight="0.0" prefWidth="428.0" />
             <Button fx:id="newPoli" layoutX="150.0" layoutY="355.0" mnemonicParsing="false" onAction="#newPoliClicked" prefHeight="25.0" prefWidth="168.0" text="Generar polinomio nuevo" />
             <Button fx:id="salir" mnemonicParsing="false" onAction="#salirClicked" prefHeight="25.0" prefWidth="168.0" text="Salir" />
