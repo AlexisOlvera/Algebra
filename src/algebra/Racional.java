@@ -76,7 +76,7 @@ public class Racional {
     }
     @Override
     public String toString(){
-        return num + "/" + den;
+        return "["+num + "/" + den+"]";
     }
     
     boolean esPositivo(){

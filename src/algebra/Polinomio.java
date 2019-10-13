@@ -14,28 +14,34 @@ import java.util.Random;
  */
 public class Polinomio {
     private int grado;
-    private ArrayList<Racional> coeficientes;
-    private ArrayList<Double> coeficientesD;
+    private ArrayList<Monomio> terminos;
+    private ArrayList<Double> terminosD;
+    private final Racional racional0 = new Racional(1, 0);
     
     
     public Polinomio(int grado){
         this.grado = grado;
     }
     
-    public Polinomio(int grado, ArrayList<Racional> coeficientes){
+    public Polinomio(int grado, ArrayList<Monomio> terminos){
         this.grado = grado;
-        this.coeficientes = coeficientes;
+        this.terminos = terminos;
+    }
+    
+    public Polinomio(ArrayList<Monomio> terminos){
+        this.terminos = terminos;
     }
     
     public static Polinomio createPolinomioRandom(){
         Random rand = new Random();
         rand.ints();
         int grade = rand.nextInt(4)+2;
-        ArrayList<Racional> coef = new ArrayList<>();
-        int den;
+        ArrayList<Monomio> coef = new ArrayList<>();
+        int den, num;
         for(int i=0; i<=grade; i++){
-            den=rand.nextInt(9);
-            coef.add(new Racional(den, 1));
+            num=rand.nextInt(9);
+            den=rand.nextBoolean()?rand.nextInt(8)+1:-(rand.nextInt(8)+1);
+            coef.add(new Monomio(new Racional(num, den), i));
         }
         return new Polinomio(grade, coef);
     }
@@ -48,28 +54,28 @@ public class Polinomio {
         this.grado = grado;
     }
 
-    public ArrayList<Racional> getCoeficientes() {
-        return coeficientes;
+    public ArrayList<Monomio> getterminos() {
+        return terminos;
     }
 
-    public void setCoeficientes(ArrayList<Racional> coeficientes) {
-        this.coeficientes = coeficientes;
+    public void setterminos(ArrayList<Monomio> terminos) {
+        this.terminos = terminos;
     }
     
     public Polinomio sumar(Polinomio p2){
-        ArrayList<Racional> coe=new ArrayList<>();
+        ArrayList<Monomio> coe=new ArrayList<>();
         int grad=grado;
-        for(Racional p:coeficientes)
+        for(Monomio p:terminos)
             coe.add(p);
         int diferencia = p2.grado - grado;
         if(diferencia <= 0)
             for(int i = 0; i<=p2.grado; i++)
-                coe.set(i, coe.get(i).sumar(p2.coeficientes.get(i)));
+                coe.set(i, coe.get(i).sumarMonomios(p2.terminos.get(i)));
         else{
             for(int i = 0; i<=grado; i++)
-                coe.set(i, coe.get(i).sumar(p2.coeficientes.get(i)));
+                coe.set(i, coe.get(i).sumarMonomios(p2.terminos.get(i)));
             for(int i = grado+1; i<=p2.grado; i++)
-                coe.add(p2.coeficientes.get(i));
+                coe.add(p2.terminos.get(i));
             grad = p2.grado;
         }
         return new Polinomio(grad, coe);
@@ -77,20 +83,20 @@ public class Polinomio {
     
     
     public Polinomio restar(Polinomio p2){
-        ArrayList<Racional> coe=new ArrayList<>();
+        ArrayList<Monomio> coe=new ArrayList<>();
         int grad=grado;
-        for(Racional p:coeficientes)
+        for(Monomio p:terminos)
             coe.add(p);
         int diferencia = p2.grado - grado;
         if(diferencia <= 0)
             for(int i = 0; i<=p2.grado; i++)
-                coe.set(i, coeficientes.get(i).restar(p2.coeficientes.get(i)));
+                coe.set(i, terminos.get(i).restarMonomios(p2.terminos.get(i)));
         else{
             for(int i = 0; i<=grado; i++)
-                coe.set(i, coeficientes.get(i).restar(p2.coeficientes.get(i)));
+                coe.set(i, terminos.get(i).restarMonomios(p2.terminos.get(i)));
             for(int i = grado+1; i<=p2.grado; i++){
-                Racional r=new Racional(0,1);
-                coe.add(r.restar(p2.coeficientes.get(i)));
+                Monomio r=new Monomio(racional0,1);
+                coe.add(r.restarMonomios(p2.terminos.get(i)));
             }
             grad = p2.grado;
         }
@@ -99,14 +105,14 @@ public class Polinomio {
     
     public Polinomio multiplicar(Polinomio p2){
         int gradoMax = grado + p2.grado;
-        ArrayList<Racional> coef = new ArrayList<>();
+        ArrayList<Monomio> coef = new ArrayList<>();
         for(int  i=0; i<=gradoMax; i++){
-            Racional r = new Racional(0,1);
+            Monomio r = new Monomio(racional0,1);
             coef.add(r);
         }
         for(int i = 0; i<=grado; i++)
             for(int j = 0; j<=p2.grado; j++)
-                coef.set(i+j, coef.get(i+j).sumar(coeficientes.get(i).multiplicar(p2.coeficientes.get(j))));
+                coef.set(i+j, coef.get(i+j).sumarMonomios(terminos.get(i).multiplicarMonomios(p2.terminos.get(j))));
         return new Polinomio(gradoMax, coef);
     }
     
@@ -119,7 +125,7 @@ public class Polinomio {
         if(grado!=p2.grado)
             return false;
         for(int i =0; i<=grado; i++)
-            if(!coeficientes.get(i).comparar(p2.coeficientes.get(i)))
+            if(!terminos.get(i).compararMonomio(p2.terminos.get(i)))
                 return false;
         return true;
     }
@@ -127,14 +133,13 @@ public class Polinomio {
     @Override
     public String toString(){
         String ret="";
-        Racional r0 = new Racional(0,1);
         for(int i=grado; i>=0; i--){
-            if(!coeficientes.get(i).comparar(r0)){
+            if(terminos.get(i).getCoeficiente().aDecimales()!=0.0){
                 if(i!=0){
-                    ret+=coeficientes.get(i)+"x^"+i;
+                    ret+=setPrecision(terminos.get(i).getCoeficiente().aDecimales(),3)+"x^"+i;
                     ret+=" + ";
                 } else
-                    ret += coeficientes.get(i) + "";
+                    ret += setPrecision(terminos.get(i).getCoeficiente().aDecimales(), 3)+ "";
                 
             }
         }
@@ -143,13 +148,14 @@ public class Polinomio {
     
     public String toStringBonito(){
         String ret="";
+        Monomio r0 = new Monomio(racional0,1);
         for(int i=grado; i>=0; i--){
-            if(coeficientes.get(i).aDecimales()!=0.0){
+            if(!terminos.get(i).compararMonomio(r0)){
                 if(i!=0){
-                    ret+=coeficientes.get(i).aDecimales()+"x^"+i;
+                    ret+=terminos.get(i);
                     ret+=" + ";
                 } else
-                    ret += coeficientes.get(i).aDecimales()+ "";
+                    ret += terminos.get(i) + "";
                 
             }
         }
@@ -158,43 +164,11 @@ public class Polinomio {
     
     public ArrayList<Double> toArrayDouble(){
         ArrayList<Double> ret = new ArrayList<>();
-        for(Racional r: coeficientes)
-            ret.add(r.aDecimales());
+        for(Monomio r: terminos)
+            ret.add(r.getCoeficiente().aDecimales());
         return ret;
     }
     
-    public ArrayList<Double> obtnerRaices(){
-        ArrayList<Double> Reales = new ArrayList<>();
-        ArrayList<Double> Imaginarias = new ArrayList<>();
-        switch(grado){
-            case 1:
-                System.out.println(coeficientes.get(0).dividir(coeficientes.get(1)));
-                Reales.add(coeficientes.get(0).dividir(coeficientes.get(1)).aDecimales());
-                break;
-            case 2:
-                Racional discriminante = coeficientes.get(1).cuadrado().restar(coeficientes.get(0).multiplicar(coeficientes.get(2)).multiplicar(4));
-                if(discriminante.esPositivo()){
-                    Reales.add((-coeficientes.get(1).aDecimales()+Math.sqrt(discriminante.aDecimales()))/coeficientes.get(2).aDecimales()*2.0);
-                    Reales.add((-coeficientes.get(1).aDecimales()-Math.sqrt(discriminante.aDecimales()))/coeficientes.get(2).aDecimales()*2.0);
-                    Imaginarias.add(0.0);
-                    Imaginarias.add(0.0);
-                } else{
-                    Imaginarias.add(discriminante.aDecimales()/(coeficientes.get(2).aDecimales()*2));
-                    Imaginarias.add(-discriminante.aDecimales()/(coeficientes.get(2).aDecimales()*2));
-                    Reales.add(-coeficientes.get(1).aDecimales()/(coeficientes.get(2).aDecimales()*2));
-                    Reales.add(-coeficientes.get(1).aDecimales()/(coeficientes.get(2).aDecimales()*2));
-                }
-                break;
-            default:
-                   Reales = DivisionSint();
-        }
-        
-        for(Double a:Reales)
-            System.out.println(a.toString());
-        for(Double a:Imaginarias)
-            System.out.println(a.toString());
-        return Reales;
-    }       
         
     public ArrayList<Double>DivisionSint(){
         int indice, contador=grado;
@@ -239,17 +213,17 @@ public class Polinomio {
         return Soluciones;
     }
         
-    public Polinomio(int grado, ArrayList<Double> coeficientes, char ops){
+    public Polinomio(int grado, ArrayList<Double> terminos, char ops){
         System.out.println("Construyendo Polinomio Double");
         this.grado = grado;
-        this.coeficientesD = coeficientes;
+        this.terminosD = terminos;
     }
     
     public boolean compararD(Polinomio p2){
         if(grado!=p2.grado)
             return false;
         for(int i =0; i<=grado; i++)
-            if(!coeficientesD.get(i).equals(p2.coeficientesD.get(i)))
+            if(!terminosD.get(i).equals(p2.terminosD.get(i)))
                 return false;
         return true;
     }
@@ -258,12 +232,12 @@ public class Polinomio {
         String ret="";
         Double r0 = 0.0;
         for(int i=grado; i>=0; i--){
-            if(!coeficientesD.get(i).equals(r0)){
+            if(!terminosD.get(i).equals(r0)){
                 if(i!=0){
-                    ret+=coeficientesD.get(i)+"x^"+i;
+                    ret+=setPrecision(terminosD.get(i), 3)+"x^"+i;
                     ret+=" + ";
                 } else
-                    ret += coeficientesD.get(i) + "";   
+                    ret += terminosD.get(i) + "";   
             }
         }
         return ret;
@@ -272,9 +246,9 @@ public class Polinomio {
     public boolean compararDoubles(Polinomio p){
         if(p.grado != grado)
             return false;
-        coeficientesD = this.toArrayDouble();
+        terminosD = this.toArrayDouble();
         for(int i =0; i<=grado; i++)
-            if(p.coeficientesD.get(i)>coeficientesD.get(i)+0.3 ||p.coeficientesD.get(i)<coeficientesD.get(i)-0.3)
+            if(p.terminosD.get(i)>terminosD.get(i)+0.3 ||p.terminosD.get(i)<terminosD.get(i)-0.3)
                 return false;
         return true;
     }
@@ -284,7 +258,7 @@ public class Polinomio {
         soluciones = new String[grado];
         double[] coe = new double[grado+1];
         for (int i = 0; i <= grado; i++) {
-           coe[i] = coeficientes.get(i).aDecimales();
+           coe[i] = terminos.get(i).getCoeficiente().aDecimales();
         }
          return resuelveEc(coe, grado);
     }
@@ -359,21 +333,25 @@ public class Polinomio {
     }
     
     public Polinomio derivada(){
-        ArrayList<Racional> aux = new ArrayList<>();
+        ArrayList<Monomio> aux = new ArrayList<>();
         for(int i=1; i<=grado; i++){
-            aux.add(coeficientes.get(i).multiplicar(i));
+            aux.add(terminos.get(i).multiplicarMonomios(i));
         }
         return new Polinomio(grado-1, aux);
     }
     
     public Polinomio integral(){
-        ArrayList<Racional> aux = new ArrayList<>();
-        aux.add(new Racional(0, 1));
+        ArrayList<Monomio> aux = new ArrayList<>();
+        aux.add(new Monomio(racional0, 1));
         for(int i=0; i<=grado; i++){
-            aux.add(coeficientes.get(i).dividir(i+1));
+            aux.add(terminos.get(i).dividirMonomio(i+1));
             System.out.println(aux.get(i));
         }
         return new Polinomio(grado+1, aux);
+    }
+    
+    private static String setPrecision(double amt, int precision){
+        return String.format("%." + precision + "f", amt);
     }
     
 
