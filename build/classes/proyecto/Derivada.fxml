@@ -8,14 +8,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="747.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto.DerivadaController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="810.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto.DerivadaController">
    <children>
       <Label contentDisplay="CENTER" layoutX="247.0" layoutY="29.0" text="Derivada del Polinomio">
          <font>
             <Font size="25.0" />
          </font>
       </Label>
-      <VBox layoutX="177.0" layoutY="102.0">
+      <VBox layoutX="130.0" layoutY="100.0" prefHeight="70.0" prefWidth="550.0">
          <children>
             <Label prefHeight="30.0" prefWidth="397.0" text="Obten la derivada del siguiente polinomio:">
                <font>
@@ -23,7 +23,7 @@
                </font>
             </Label>
             <Region prefHeight="11.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
-            <Label fx:id="labelPol1" prefHeight="25.0" prefWidth="381.0" text="x6+x5+x4x+x3x2+x1+0">
+            <Label fx:id="labelPol1" prefHeight="25.0" prefWidth="550.0" text="x6+x5+x4x+x3x2+x1+0">
                <font>
                   <Font size="16.0" />
                </font>
@@ -31,24 +31,24 @@
             <Region prefHeight="4.0" prefWidth="393.0" />
          </children>
       </VBox>
-      <HBox layoutX="175.0" layoutY="251.0">
+      <HBox layoutX="130.0" layoutY="252.0">
          <children>
-            <TextField fx:id="grad5" alignment="CENTER" layoutX="10.0" layoutY="10.0" onAction="#confirmarClicked" prefHeight="25.0" prefWidth="25.0" promptText="0" />
+            <TextField fx:id="grad5" alignment="CENTER" layoutX="10.0" layoutY="10.0" onAction="#confirmarClicked" prefHeight="25.0" prefWidth="50.0" promptText="0" />
             <Label alignment="CENTER" layoutX="35.0" layoutY="10.0" prefHeight="25.0" prefWidth="25.0" text="x^5" />
             <Label alignment="CENTER" layoutX="60.0" layoutY="10.0" prefHeight="25.0" prefWidth="25.0" text="+" />
-            <TextField fx:id="grad4" alignment="CENTER" layoutX="10.0" layoutY="10.0" onAction="#confirmarClicked" prefHeight="25.0" prefWidth="25.0" promptText="0" />
+            <TextField fx:id="grad4" alignment="CENTER" layoutX="10.0" layoutY="10.0" onAction="#confirmarClicked" prefHeight="25.0" prefWidth="50.0" promptText="0" />
             <Label alignment="CENTER" layoutX="35.0" layoutY="10.0" prefHeight="25.0" prefWidth="25.0" text="x^4" />
             <Label alignment="CENTER" layoutX="60.0" layoutY="10.0" prefHeight="25.0" prefWidth="25.0" text="+" />
-            <TextField fx:id="grad3" alignment="CENTER" layoutX="10.0" layoutY="10.0" onAction="#confirmarClicked" prefHeight="25.0" prefWidth="25.0" promptText="0" />
+            <TextField fx:id="grad3" alignment="CENTER" layoutX="10.0" layoutY="10.0" onAction="#confirmarClicked" prefHeight="25.0" prefWidth="50.0" promptText="0" />
             <Label alignment="CENTER" layoutX="35.0" layoutY="10.0" prefHeight="25.0" prefWidth="25.0" text="x^3" />
             <Label alignment="CENTER" layoutX="60.0" layoutY="10.0" prefHeight="25.0" prefWidth="25.0" text="+" />
-            <TextField fx:id="grad2" alignment="CENTER" layoutX="10.0" layoutY="10.0" onAction="#confirmarClicked" prefHeight="25.0" prefWidth="25.0" promptText="0" />
+            <TextField fx:id="grad2" alignment="CENTER" layoutX="10.0" layoutY="10.0" onAction="#confirmarClicked" prefHeight="25.0" prefWidth="50.0" promptText="0" />
             <Label alignment="CENTER" layoutX="35.0" layoutY="10.0" prefHeight="25.0" prefWidth="25.0" text="x^2" HBox.hgrow="ALWAYS" />
             <Label alignment="CENTER" layoutX="60.0" layoutY="10.0" prefHeight="25.0" prefWidth="25.0" text="+" />
-            <TextField fx:id="grad1" alignment="CENTER" layoutX="10.0" layoutY="10.0" onAction="#confirmarClicked" prefHeight="25.0" prefWidth="25.0" promptText="0" />
+            <TextField fx:id="grad1" alignment="CENTER" layoutX="10.0" layoutY="10.0" onAction="#confirmarClicked" prefHeight="25.0" prefWidth="50.0" promptText="0" />
             <Label alignment="CENTER" layoutX="35.0" layoutY="10.0" prefHeight="25.0" prefWidth="25.0" text="x" />
             <Label alignment="CENTER" layoutX="60.0" layoutY="10.0" prefHeight="25.0" prefWidth="25.0" text="+" />
-            <TextField fx:id="grad0" alignment="CENTER" layoutX="10.0" layoutY="10.0" onAction="#confirmarClicked" prefHeight="25.0" prefWidth="25.0" promptText="0" />
+            <TextField fx:id="grad0" alignment="CENTER" layoutX="10.0" layoutY="10.0" onAction="#confirmarClicked" prefHeight="25.0" prefWidth="50.0" promptText="0" />
          </children>
       </HBox>
       <HBox layoutX="242.0" layoutY="359.0" spacing="20.0">
@@ -62,6 +62,6 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <Label fx:id="labelRespuesta" alignment="CENTER" contentDisplay="CENTER" layoutX="137.0" layoutY="289.0" prefHeight="60.0" prefWidth="475.0" />
+      <Label fx:id="labelRespuesta" alignment="CENTER" contentDisplay="CENTER" layoutX="137.0" layoutY="289.0" prefHeight="60.0" prefWidth="572.0" />
    </children>
 </AnchorPane>

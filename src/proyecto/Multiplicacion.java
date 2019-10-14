@@ -75,21 +75,20 @@ public Polinomio pol1,pol2;
     private Label labelPol2;
     
     public void confirmarClicked(){
-        ArrayList<Double> coef = new ArrayList<>();
-        if(grad0.getText().isEmpty())coef.add(0.0);else coef.add(Double.parseDouble(grad0.getText()));
-        if(grad1.getText().isEmpty())coef.add(0.0);else coef.add(Double.parseDouble(grad1.getText()));
-        if(grad2.getText().isEmpty())coef.add(0.0);else coef.add(Double.parseDouble(grad2.getText()));
-        if(grad3.getText().isEmpty())coef.add(0.0);else coef.add(Double.parseDouble(grad3.getText()));
-        if(grad4.getText().isEmpty())coef.add(0.0);else coef.add(Double.parseDouble(grad4.getText()));
-        if(grad5.getText().isEmpty())coef.add(0.0);else coef.add(Double.parseDouble(grad5.getText()));
-        if(grad6.getText().isEmpty())coef.add(0.0);else coef.add(Double.parseDouble(grad6.getText()));
-        if(grad7.getText().isEmpty())coef.add(0.0);else coef.add(Double.parseDouble(grad7.getText()));
-        if(grad8.getText().isEmpty())coef.add(0.0);else coef.add(Double.parseDouble(grad8.getText()));
-        if(grad9.getText().isEmpty())coef.add(0.0);else coef.add(Double.parseDouble(grad9.getText()));
-        if(grad10.getText().isEmpty())coef.add(0.0);else coef.add(Double.parseDouble(grad10.getText()));
-        if(grad11.getText().isEmpty())coef.add(0.0);else coef.add(Double.parseDouble(grad11.getText()));
-        if(grad12.getText().isEmpty())coef.add(0.0);else coef.add(Double.parseDouble(grad12.getText()));
-
+        ArrayList<Monomio> coef = new ArrayList<>();
+        if(grad0.getText().isEmpty())coef.add(new Monomio(new Racional(0,1),0)); else coef.add(new Monomio(getRac(grad0),0));
+        if(grad1.getText().isEmpty())coef.add(new Monomio(new Racional(0,1),1)); else coef.add(new Monomio(getRac(grad1),1));
+        if(grad2.getText().isEmpty())coef.add(new Monomio(new Racional(0,1),2)); else coef.add(new Monomio(getRac(grad2),2));
+        if(grad3.getText().isEmpty())coef.add(new Monomio(new Racional(0,1),3)); else coef.add(new Monomio(getRac(grad3),3));
+        if(grad4.getText().isEmpty())coef.add(new Monomio(new Racional(0,1),4)); else coef.add(new Monomio(getRac(grad4),4));
+        if(grad5.getText().isEmpty())coef.add(new Monomio(new Racional(0,1),5)); else coef.add(new Monomio(getRac(grad5),5));
+        if(grad6.getText().isEmpty())coef.add(new Monomio(new Racional(0,1),6)); else coef.add(new Monomio(getRac(grad6),6));
+        if(grad7.getText().isEmpty())coef.add(new Monomio(new Racional(0,1),7)); else coef.add(new Monomio(getRac(grad7),7));
+        if(grad8.getText().isEmpty())coef.add(new Monomio(new Racional(0,1),8)); else coef.add(new Monomio(getRac(grad8),8));
+        if(grad9.getText().isEmpty())coef.add(new Monomio(new Racional(0,1),9)); else coef.add(new Monomio(getRac(grad9),9));
+        if(grad10.getText().isEmpty())coef.add(new Monomio(new Racional(0,1),10)); else coef.add(new Monomio(getRac(grad10),10));
+        if(grad11.getText().isEmpty())coef.add(new Monomio(new Racional(0,1),11)); else coef.add(new Monomio(getRac(grad11),11));
+        if(grad12.getText().isEmpty())coef.add(new Monomio(new Racional(0,1),12)); else coef.add(new Monomio(getRac(grad12),12));
         int grado;
         if (!grad12.getText().isEmpty())
             grado = 12;
@@ -118,18 +117,21 @@ public Polinomio pol1,pol2;
         
         
         System.out.println(coef + ":" +grado);
-        char ass = '1';
-        Polinomio polInput = new Polinomio(grado, coef, ass);
-       Polinomio  mul = pol1.multiplicar(pol2);
+        Polinomio polInput = new Polinomio(grado, coef);
         
-        System.out.println(polInput.toStringD());
+        Polinomio  mul = pol1.multiplicar(pol2);
+        
+        System.out.println("Input: ");
+        System.out.println(polInput.toStringBonito());
+        System.out.println("Correcto: ");
         System.out.println(mul.toStringBonito());
-        if(mul.compararDoubles(polInput))
+        
+        if(mul.comparar(polInput))
                 labelRespuesta.setText("Correcto");
         else
                  labelRespuesta.setText("La respuesta correcta es " + mul.toStringBonito());
         
-        System.out.println(polInput.toStringD());
+        System.out.println("Correcto?"+mul.comparar(polInput));
     }
     
     public void salirClicked(){
@@ -147,7 +149,11 @@ public Polinomio pol1,pol2;
         labelPol2.setText(this.pol2.toStringBonito());
     }
         
-        
+    private Racional getRac(TextField txtField){
+        String inputString = txtField.getText();
+        String[] str = inputString.split("/", 2);
+        return new Racional(Integer.parseInt(str[0]),Integer.parseInt(str[1]));
+    }    
   
     @Override
     public void initialize(URL url, ResourceBundle rb) {

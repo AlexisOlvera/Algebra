@@ -53,18 +53,16 @@ public class DerivadaController implements Initializable {
     @FXML
     private TextField grad5;
 
-    @FXML
-    private TextField grad6;
 
     public void confirmarClicked(){
-        ArrayList<Double> coef = new ArrayList<>();
-        if(grad0.getText().isEmpty())coef.add(0.0);else coef.add(Double.parseDouble(grad0.getText()));
-        if(grad1.getText().isEmpty())coef.add(0.0);else coef.add(Double.parseDouble(grad1.getText()));
-        if(grad2.getText().isEmpty())coef.add(0.0);else coef.add(Double.parseDouble(grad2.getText()));
-        if(grad3.getText().isEmpty())coef.add(0.0);else coef.add(Double.parseDouble(grad3.getText()));
-        if(grad4.getText().isEmpty())coef.add(0.0);else coef.add(Double.parseDouble(grad4.getText()));
-        if(grad5.getText().isEmpty())coef.add(0.0);else coef.add(Double.parseDouble(grad5.getText()));
-//        if(grad6.getText().isEmpty())coef.add(0.0);else coef.add(Double.parseDouble(grad6.getText()));
+       ArrayList<Monomio> coef = new ArrayList<>();
+        if(grad0.getText().isEmpty())coef.add(new Monomio(new Racional(0,1),0)); else coef.add(new Monomio(getRac(grad0),0));
+        if(grad1.getText().isEmpty())coef.add(new Monomio(new Racional(0,1),1)); else coef.add(new Monomio(getRac(grad1),1));
+        if(grad2.getText().isEmpty())coef.add(new Monomio(new Racional(0,1),2)); else coef.add(new Monomio(getRac(grad2),2));
+        if(grad3.getText().isEmpty())coef.add(new Monomio(new Racional(0,1),3)); else coef.add(new Monomio(getRac(grad3),3));
+        if(grad4.getText().isEmpty())coef.add(new Monomio(new Racional(0,1),4)); else coef.add(new Monomio(getRac(grad4),4));
+        if(grad5.getText().isEmpty())coef.add(new Monomio(new Racional(0,1),5)); else coef.add(new Monomio(getRac(grad5),5));
+
         int grado;
 //        if (!grad6.getText().isEmpty())
 //            grado = 6;
@@ -83,24 +81,22 @@ public class DerivadaController implements Initializable {
             grado = 0;
         
         System.out.println(coef + ":" +grado);
-        char ass = '1';
-        Polinomio polInput = new Polinomio(grado, coef, ass);
+        Polinomio polInput = new Polinomio(grado, coef);
         
         
-       Polinomio der = pol1.derivada();
+        Polinomio der = pol1.derivada();
         
-        
-        System.out.println(polInput.toStringD());
-        System.out.println(pol1.toStringBonito());
-        if(der.compararDoubles(polInput))
+        System.out.println("Input: ");
+        System.out.println(polInput.toStringBonito());
+        System.out.println("Correcto: ");
+        System.out.println(der.toStringBonito());
+
+        if(der.comparar(polInput))
                 labelRespuesta.setText("Correcto");
         else
                  labelRespuesta.setText("La respuesta correcta es " + der.toStringBonito());
-        //if(sonIguales(polSuma, polInput))
-        //  labelRespuesta.setText("Correcto");
-        //else 
-        //  labelRespuesta.setText("La respuesta correcta es " + polSuma);
-        //Pero de mientras
+        
+        System.out.println("Correcto?"+der.comparar(polInput));
         
     }
     
@@ -116,15 +112,14 @@ public class DerivadaController implements Initializable {
     public void setPoli(Polinomio pol1){
         this.pol1 = pol1;
         labelPol1.setText(this.pol1.toStringBonito());
-        
-//        System.out.println("Polinomio 1:  "+pol1.toString());
-//        System.out.println("Polinomio 2:  "+pol2.toString());
-//        
-//        try {System.out.println("Polinomio 1b: "+pol1.toStringBonito()); }
-//            catch (Exception e) {System.out.println("polinomio 1 bonito no generado");}
-//        try {System.out.println("Polinomio 2b: "+pol2.toStringBonito()); }
-//            catch (Exception e) {System.out.println("polinomio 2 bonito no generado");}
     }
+    
+    private Racional getRac(TextField txtField){
+        String inputString = txtField.getText();
+        String[] str = inputString.split("/", 2);
+        return new Racional(Integer.parseInt(str[0]),Integer.parseInt(str[1]));
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO

@@ -16,7 +16,7 @@ public class Polinomio {
     private int grado;
     private ArrayList<Monomio> terminos;
     private ArrayList<Double> terminosD;
-    private final Racional racional0 = new Racional(1, 0);
+    private final Racional racional0 = new Racional(0, 1);
     
     
     public Polinomio(int grado){
@@ -39,7 +39,7 @@ public class Polinomio {
         ArrayList<Monomio> coef = new ArrayList<>();
         int den, num;
         for(int i=0; i<=grade; i++){
-            num=rand.nextInt(9);
+            num=rand.nextInt(9)+1;
             den=rand.nextBoolean()?rand.nextInt(8)+1:-(rand.nextInt(8)+1);
             coef.add(new Monomio(new Racional(num, den), i));
         }

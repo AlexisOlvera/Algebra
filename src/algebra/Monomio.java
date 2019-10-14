@@ -23,7 +23,7 @@ public class Monomio {
         }
     }
     
-    Monomio(Racional r, int grad){
+    public Monomio(Racional r, int grad){
         coeficiente = r;
         grado = grad;
     }
