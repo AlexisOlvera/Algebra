@@ -32,15 +32,19 @@ public class Polinomio {
         this.terminos = terminos;
     }
     
-    public static Polinomio createPolinomioRandom(){
+    public static Polinomio createPolinomioRandom(int gradoMax){
         Random rand = new Random();
         rand.ints();
-        int grade = rand.nextInt(4)+2;
+        int grade;
+        if(gradoMax>2)
+            grade = rand.nextInt(gradoMax-2)+2;
+        else
+            grade = rand.nextBoolean()?1:2;
         ArrayList<Monomio> coef = new ArrayList<>();
         int den, num;
         for(int i=0; i<=grade; i++){
-            num=rand.nextInt(9)+1;
-            den=rand.nextBoolean()?rand.nextInt(8)+1:-(rand.nextInt(8)+1);
+            num=rand.nextBoolean()?rand.nextInt(8)+1:-(rand.nextInt(8)+1);
+            den=rand.nextInt(8)+1;
             coef.add(new Monomio(new Racional(num, den), i));
         }
         return new Polinomio(grade, coef);
@@ -81,7 +85,6 @@ public class Polinomio {
         return new Polinomio(grad, coe);
     }
     
-    
     public Polinomio restar(Polinomio p2){
         ArrayList<Monomio> coe=new ArrayList<>();
         int grad=grado;
@@ -95,7 +98,7 @@ public class Polinomio {
             for(int i = 0; i<=grado; i++)
                 coe.set(i, terminos.get(i).restarMonomios(p2.terminos.get(i)));
             for(int i = grado+1; i<=p2.grado; i++){
-                Monomio r=new Monomio(racional0,1);
+                Monomio r=new Monomio(racional0,i);
                 coe.add(r.restarMonomios(p2.terminos.get(i)));
             }
             grad = p2.grado;
@@ -107,7 +110,7 @@ public class Polinomio {
         int gradoMax = grado + p2.grado;
         ArrayList<Monomio> coef = new ArrayList<>();
         for(int  i=0; i<=gradoMax; i++){
-            Monomio r = new Monomio(racional0,1);
+            Monomio r = new Monomio(racional0,i);
             coef.add(r);
         }
         for(int i = 0; i<=grado; i++)
@@ -169,56 +172,6 @@ public class Polinomio {
         return ret;
     }
     
-        
-    public ArrayList<Double>DivisionSint(){
-        int indice, contador=grado;
-        double resul, sumando;
-        ArrayList<Double> Soluciones=new ArrayList<>();
-        ArrayList<Double> arrayAux = toArrayDouble();
-        while(contador>1){
-                indice=0;
-                resul=0.0;
-                sumando=0.0;
-                ArrayList <Integer> divisores = new ArrayList<>();
-                 ArrayList<Double> coef1 = new ArrayList<>();
-                 for(int i=0; i<contador; i++)
-                     coef1.add(0.0);
-                for(int i = 1; i <= Math.abs(arrayAux.get(contador)); i++){
-                    if(Math.abs(arrayAux.get(contador))%i == 0){
-                        divisores.add(i);
-                        divisores.add(-1);
-                    }
-                }
-                for(int i = 0; i<divisores.size(); i++){
-                    for(int g = 0; g<contador;g++){
-                        if(g == 0){
-                            sumando = divisores.get(i)*arrayAux.get(g);
-                            coef1.set(g, arrayAux.get(g));
-                        }else{
-                            resul = arrayAux.get(g)+ sumando;
-                            coef1.set(g, resul);
-                            sumando = resul*divisores.get(i);
-                        }  
-                    }
-                    if(resul == 0){
-                        indice = i;
-                        break;
-                    }
-                }
-                Soluciones.add(divisores.get(indice).doubleValue());
-                arrayAux = (ArrayList<Double>) coef1.clone();
-                contador--;
-            }
-        
-        return Soluciones;
-    }
-        
-    public Polinomio(int grado, ArrayList<Double> terminos, char ops){
-        System.out.println("Construyendo Polinomio Double");
-        this.grado = grado;
-        this.terminosD = terminos;
-    }
-    
     public boolean compararD(Polinomio p2){
         if(grado!=p2.grado)
             return false;
@@ -253,52 +206,6 @@ public class Polinomio {
         return true;
     }
     
-    String soluciones[];
-    public String[] teorema(){
-        soluciones = new String[grado];
-        double[] coe = new double[grado+1];
-        for (int i = 0; i <= grado; i++) {
-           coe[i] = terminos.get(i).getCoeficiente().aDecimales();
-        }
-         return resuelveEc(coe, grado);
-    }
-    
-    
-    String[] resuelveEc(double coef[], int grado){
-        double divSint[] = null;
-        switch(grado){
-            case 1:
-                soluciones[0] = -(coef[1])/coef[0]+"";
-                break;
-            case 2:
-                Double discriminante = Math.pow(coef[1], 2) - 4*coef[0]*coef[2];
-                if(discriminante >= 0){
-                    soluciones[0] = ((-coef[1])+Math.sqrt(discriminante))/(2*coef[0])+"";
-                    soluciones[1] = ((-coef[1])-Math.sqrt(discriminante))/(2*coef[0])+"";
-                }else{
-                    soluciones[0] = ""+(-coef[1])/2*coef[0]+"+("+Math.sqrt(-discriminante)/2*coef[0]+")i";
-                    soluciones[1] = ""+(-coef[1])/2*coef[0]+"-("+Math.sqrt(-discriminante)/2*coef[0]+")i";
-                }
-                break;
-            default:
-                double coef1[] = new double[grado];
-                if(coef[grado] == 0){
-                    soluciones[grado-1] = 0.0+"";
-                    for(int i = 0; i<grado; i++){
-                        coef1[i] = coef[i];
-                    }
-                }else{
-                    divSint = DivisionSint(coef, grado);
-                    soluciones[grado-1] = divSint[coef.length-1]+"";
-                    for(int i = 0; i<grado; i++){
-                        coef1[i] = divSint[i];
-                    }
-                }
-                resuelveEc(coef1, grado-1);
-                break;  
-        }
-        return soluciones;
-    }
     
     double[] DivisionSint(double coef[], int grado){
         int indice = 0;
@@ -334,8 +241,9 @@ public class Polinomio {
     
     public Polinomio derivada(){
         ArrayList<Monomio> aux = new ArrayList<>();
-        for(int i=1; i<=grado; i++){
-            aux.add(terminos.get(i).multiplicarMonomios(i));
+        for(int  i=0; i<grado; i++){
+            Monomio r = new Monomio(terminos.get(i+1).getCoeficiente().multiplicar(i+1),i);
+            aux.add(r);
         }
         return new Polinomio(grado-1, aux);
     }
@@ -343,9 +251,9 @@ public class Polinomio {
     public Polinomio integral(){
         ArrayList<Monomio> aux = new ArrayList<>();
         aux.add(new Monomio(racional0, 1));
-        for(int i=0; i<=grado; i++){
-            aux.add(terminos.get(i).dividirMonomio(i+1));
-            System.out.println(aux.get(i));
+        for(int  i=0; i<=grado; i++){
+            Monomio r = new Monomio(terminos.get(i).getCoeficiente().dividir(i+1),i+1);
+            aux.add(r);
         }
         return new Polinomio(grado+1, aux);
     }
@@ -354,6 +262,27 @@ public class Polinomio {
         return String.format("%." + precision + "f", amt);
     }
     
+    public ArrayList<Complejo> calcularRaices(){
+        ArrayList<Complejo> ret = new ArrayList<>();
+        ArrayList<Double> dobles = toArrayDouble();
+        switch(grado){
+            case 1:
+                ret.add(new Complejo((float) (dobles.get(0)/dobles.get(1)), 0.0f));
+                ret.add(new Complejo(0.0f, 0.0f));
+                break;
+            case 2:
+                double real = -dobles.get(1)/(2*dobles.get(2));
+                double imaginario = Math.sqrt(Math.abs(Math.pow(dobles.get(1), 2)-4*dobles.get(2)*dobles.get(0)))/(2*dobles.get(2));
+                ret.add(new Complejo(real, imaginario));
+                ret.add(new Complejo(real, -imaginario));
+                break;
+            default:
+                ret.add(new Complejo(0.0f, 0.0f));
+                ret.add(new Complejo(0.0f, 0.0f));
+                break;
+        }
+        return ret;
+    }
 
         
 }

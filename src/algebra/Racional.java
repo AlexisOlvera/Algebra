@@ -18,15 +18,13 @@ public class Racional {
      }
     
     public Racional sumar(Racional r){
-        int mD= mcd(r.den, den);
-        Racional rp = new Racional((mD/r.den)*num + (mD/den)*r.num, mD);
+        Racional rp = new Racional(r.den*num +den*r.num, r.den * den);
         rp.reducir();
         return rp;
     }
     
     public Racional restar(Racional r){
-        int mD= mcd(r.den, den);
-        Racional rp = new Racional((mD/r.den)*num - (mD/den)*r.num, mD);
+        Racional rp = new Racional(r.den*num -den*r.num, r.den * den);
         rp.reducir();
         return rp;
     }
@@ -63,6 +61,8 @@ public class Racional {
     
     
     private int gcd(int a, int b){
+        a=Math.abs(a);
+        b=Math.abs(b);
         int gc=1;
         for(int i = 1; i <= a && i <= b; i++)
             if(a%i==0 && b%i==0)
@@ -79,15 +79,15 @@ public class Racional {
         return "["+num + "/" + den+"]";
     }
     
-    boolean esPositivo(){
+    public boolean esPositivo(){
         return (den>=0 && num>=0) || (den<0 && num<0);
     }
     
-    double aDecimales(){
+    public double aDecimales(){
         return Double.parseDouble(num+"")/Double.parseDouble(den+"");
     }
     
-    void reducir(){
+    public void reducir(){
         int gc = gcd(num, den);
         num/=gc;
         den/=gc;
